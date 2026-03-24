@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=Oswald:wght@500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=6" />
+    <link rel="stylesheet" href="styles.css?v=9" />
   </head>
   <body>
     <div class="page-shell">
@@ -100,7 +100,7 @@
             <h2>歯式</h2>
             <button type="button" class="ghost-button" id="clearTeethButton">選択クリア</button>
           </div>
-          <p class="helper-copy">歯の画像は見本表示です。下の歯番号ボタンから対象歯を選択してください。</p>
+          <p class="helper-copy">横向きiPadで押しやすいボタン式に戻しています。必要な歯をタップして選択してください。</p>
           <div class="teeth-selection" id="selectedTeethSummary"></div>
           <div class="tooth-picker" id="toothPicker"></div>
         </section>
@@ -174,9 +174,9 @@
         <section class="section-card">
           <div class="section-header">
             <h2>明細一覧</h2>
-            <button type="button" class="ghost-button" id="addItemButton">空行を追加</button>
+            <button type="button" class="ghost-button" id="addItemButton">イレギュラー項目追加</button>
           </div>
-          <p class="helper-copy">明細はまず個別の追加・削除・上下移動だけにしています。</p>
+          <p class="helper-copy">ここで項目名、対象歯、数量、金額を手動修正できます。イレギュラー対応は右上の追加ボタンから空行を作って直接入力してください。</p>
           <div id="itemsList" class="items-list"></div>
         </section>
 
@@ -344,7 +344,7 @@
       </div>
     </template>
 
-    <script src="master-data.js?v=6"></script>
-    <script src="app.js?v=6"></script>
+    <script src="master-data.js?v=9"></script>
+    <script src="app.js?v=9"></script>
   </body>
 </html>
