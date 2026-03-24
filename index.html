@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>歯科医院 見積もり作成アプリ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=Oswald:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css?v=6" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <aside class="panel controls-panel">
+        <div class="hero">
+          <p class="eyebrow">Dental Estimate Studio</p>
+          <h1>歯科医院向け見積もり作成</h1>
+          <p class="hero-copy">
+            税抜き単価で治療項目を積み上げ、通常見積と追加可能性項目を分けて患者説明用の見積書を作成します。
+          </p>
+        </div>
+
+        <section class="section-card">
+          <div class="section-header">
+            <h2>基本情報</h2>
+            <button type="button" class="ghost-button" id="resetButton">初期化</button>
+          </div>
+          <div class="field-grid">
+            <label>
+              <span>書類種別</span>
+              <select id="documentType">
+                <option value="estimate">見積書</option>
+                <option value="contract">契約書</option>
+              </select>
+            </label>
+            <label>
+              <span>見積番号</span>
+              <input id="quoteNumber" type="text" />
+            </label>
+            <label>
+              <span>発行日</span>
+              <input id="issueDate" type="date" />
+            </label>
+            <label>
+              <span>プラン名</span>
+              <input id="planName" type="text" />
+            </label>
+            <label>
+              <span>ページ表記</span>
+              <input id="pageLabel" type="text" />
+            </label>
+            <label>
+              <span>患者番号</span>
+              <input id="patientNumber" type="text" />
+            </label>
+            <label>
+              <span>患者名</span>
+              <input id="clientName" type="text" placeholder="空欄のまま印刷できます" />
+            </label>
+            <label class="full-width">
+              <span>件名</span>
+              <input id="projectTitle" type="text" />
+            </label>
+          </div>
+        </section>
+
+        <section class="section-card">
+          <div class="section-header">
+            <h2>医院情報</h2>
+          </div>
+          <div class="field-grid">
+            <label>
+              <span>医院名</span>
+              <input id="companyName" type="text" />
+            </label>
+            <label>
+              <span>担当者名</span>
+              <input id="senderName" type="text" />
+            </label>
+            <label class="full-width">
+              <span>住所</span>
+              <input id="companyAddress" type="text" />
+            </label>
+            <label>
+              <span>電話番号</span>
+              <input id="companyPhone" type="text" />
+            </label>
+            <label>
+              <span>メール</span>
+              <input id="companyEmail" type="email" />
+            </label>
+          </div>
+        </section>
+
+        <section class="section-card">
+          <div class="section-header">
+            <h2>歯式</h2>
+            <button type="button" class="ghost-button" id="clearTeethButton">選択クリア</button>
+          </div>
+          <p class="helper-copy">歯の画像は見本表示です。下の歯番号ボタンから対象歯を選択してください。</p>
+          <div class="teeth-selection" id="selectedTeethSummary"></div>
+          <div class="tooth-picker" id="toothPicker"></div>
+        </section>
+
+        <section class="section-card">
+          <div class="section-header">
+            <h2>セット一括追加</h2>
+          </div>
+          <div class="field-grid">
+            <label>
+              <span>カテゴリー</span>
+              <select id="bundleCategory"></select>
+            </label>
+            <label>
+              <span>セット</span>
+              <select id="bundleSet"></select>
+            </label>
+            <label>
+              <span>数量</span>
+              <input id="bundleQuantity" type="number" min="1" step="1" value="1" />
+            </label>
+            <label>
+              <span>見積区分</span>
+              <select id="bundleType">
+                <option value="standard">通常見積</option>
+                <option value="conditional">追加の可能性あり</option>
+              </select>
+            </label>
+            <div class="master-action full-width">
+              <button type="button" class="primary-button wide-button" id="addBundleButton">セットを一式追加</button>
+            </div>
+            <div class="full-width master-summary" id="bundlePreview"></div>
+          </div>
+        </section>
+
+        <section class="section-card">
+          <div class="section-header">
+            <h2>治療項目追加</h2>
+          </div>
+          <div class="field-grid">
+            <label>
+              <span>カテゴリー</span>
+              <select id="masterCategory"></select>
+            </label>
+            <label>
+              <span>治療名</span>
+              <select id="masterTreatment"></select>
+            </label>
+            <label>
+              <span>数量</span>
+              <input id="masterQuantity" type="number" min="1" step="1" value="1" />
+            </label>
+            <label>
+              <span>見積区分</span>
+              <select id="itemType">
+                <option value="standard">通常見積</option>
+                <option value="conditional">追加の可能性あり</option>
+              </select>
+            </label>
+            <label class="full-width">
+              <span>補足メモ</span>
+              <input id="masterNote" type="text" placeholder="必要時のみ、診療中の判断で追加、など" />
+            </label>
+            <div class="master-action full-width">
+              <button type="button" class="primary-button wide-button" id="addTreatmentButton">明細へ追加</button>
+            </div>
+            <div class="full-width master-summary" id="masterPreview"></div>
+          </div>
+        </section>
+
+        <section class="section-card">
+          <div class="section-header">
+            <h2>明細一覧</h2>
+            <button type="button" class="ghost-button" id="addItemButton">空行を追加</button>
+          </div>
+          <p class="helper-copy">明細はまず個別の追加・削除・上下移動だけにしています。</p>
+          <div id="itemsList" class="items-list"></div>
+        </section>
+
+        <section class="section-card">
+          <div class="section-header">
+            <h2>支払い・備考</h2>
+          </div>
+          <div class="field-grid">
+            <label>
+              <span>税率 (%)</span>
+              <input id="taxRate" type="number" min="0" step="0.1" />
+            </label>
+            <label>
+              <span>有効期限</span>
+              <input id="expiryDate" type="date" />
+            </label>
+            <label class="full-width">
+              <span>支払い案内</span>
+              <input id="paymentTerms" type="text" />
+            </label>
+            <label class="full-width">
+              <span>備考</span>
+              <textarea id="notes" rows="4"></textarea>
+            </label>
+            <label class="full-width" id="agreementTextField">
+              <span>契約書の同意文</span>
+              <textarea id="agreementText" rows="3"></textarea>
+            </label>
+          </div>
+        </section>
+
+        <div class="action-row">
+          <button type="button" class="primary-button wide-button" id="saveButton">保存</button>
+          <button type="button" class="ghost-button wide-button" id="printButton">印刷 / PDF</button>
+        </div>
+      </aside>
+
+      <main class="panel preview-panel">
+        <div class="preview-frame" id="printArea">
+          <header class="document-header">
+            <div>
+              <p class="document-label" id="previewDocumentLabel">Quotation</p>
+              <h2 id="previewDocumentTitle">御見積書</h2>
+              <p class="document-subtitle" id="previewProjectTitle"></p>
+            </div>
+            <div class="document-meta">
+              <div><span>見積番号</span><strong id="previewQuoteNumber"></strong></div>
+              <div><span>発行日</span><strong id="previewIssueDate"></strong></div>
+              <div><span>プラン</span><strong id="previewPlanName"></strong></div>
+            </div>
+          </header>
+
+          <section class="recipient-row">
+            <div class="recipient-block">
+              <p class="block-label" id="previewPatientNumber"></p>
+              <div class="patient-line">
+                <span id="previewClientName"></span>
+                <em>様</em>
+              </div>
+            </div>
+            <div class="sender-block minimal-clinic-block">
+              <p class="block-label">医院情報</p>
+              <h3 id="previewCompanyName"></h3>
+              <p id="previewSenderName"></p>
+            </div>
+          </section>
+
+          <section class="chart-card">
+            <div id="toothChartPreview" class="tooth-chart-preview"></div>
+          </section>
+
+          <section class="summary-banner">
+            <div class="summary-copy">
+              <div class="summary-title-row">
+                <span>通常見積 合計金額（税込）</span>
+                <small>追加可能性項目を除く</small>
+              </div>
+            </div>
+            <strong id="previewGrandTotal"></strong>
+          </section>
+
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th>項目</th>
+                <th>対象歯</th>
+                <th>数量</th>
+                <th>単価</th>
+                <th>小計</th>
+              </tr>
+            </thead>
+            <tbody id="previewItemsBody"></tbody>
+          </table>
+
+          <section class="totals-grid">
+            <div class="note-card">
+              <p class="block-label">お支払い</p>
+              <p id="previewPaymentTerms"></p>
+              <p class="block-label notes-label">備考</p>
+              <p id="previewNotes"></p>
+            </div>
+            <div class="totals-card">
+              <div class="total-line"><span>通常見積 合計（税込）</span><strong id="previewTotal"></strong></div>
+              <div><span>追加可能性項目 合計（税込）</span><strong id="previewConditionalTotal"></strong></div>
+              <div class="grand-line"><span>総合計（税込）</span><strong id="previewOverallTotal"></strong></div>
+            </div>
+          </section>
+
+          <section class="contract-section" id="previewContractSection" hidden>
+            <p class="block-label">ご同意事項</p>
+            <p class="contract-copy" id="previewAgreementText"></p>
+            <div class="signature-grid">
+              <div class="signature-box">
+                <span>ご署名</span>
+                <div class="signature-line"></div>
+              </div>
+              <div class="signature-box">
+                <span>ご署名日</span>
+                <div class="signature-line"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <template id="itemTemplate">
+      <div class="item-row">
+        <label class="item-description">
+          <span>項目名</span>
+          <input data-field="description" type="text" />
+        </label>
+        <label>
+          <span>対象歯</span>
+          <input data-field="teeth" type="text" placeholder="右上6、左下7 など" />
+        </label>
+        <label>
+          <span>数量</span>
+          <input data-field="quantity" type="number" min="0" step="1" />
+        </label>
+        <label>
+          <span>単価</span>
+          <input data-field="unitPrice" type="number" min="0" step="1" />
+        </label>
+        <label>
+          <span>区分</span>
+          <select data-field="type">
+            <option value="standard">通常見積</option>
+            <option value="conditional">追加の可能性あり</option>
+          </select>
+        </label>
+        <label class="item-note">
+          <span>補足</span>
+          <input data-field="note" type="text" placeholder="必要時のみ など" />
+        </label>
+        <div class="item-total">
+          <span>小計</span>
+          <strong data-role="lineTotal"></strong>
+        </div>
+        <div class="item-actions">
+          <button type="button" class="ghost-button" data-action="moveUp">↑</button>
+          <button type="button" class="ghost-button" data-action="moveDown">↓</button>
+          <button type="button" class="delete-button" data-action="delete">削除</button>
+        </div>
+      </div>
+    </template>
+
+    <script src="master-data.js?v=6"></script>
+    <script src="app.js?v=6"></script>
+  </body>
+</html>
